@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="{{ title_width + portion_width }}" height="20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
+  <linearGradient id="a" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+
+  <rect rx="4" x="0" width="{{ title_width + portion_width }}" height="20" fill="#{{ title_color }}"/>
+  <rect rx="4" x="{{ title_width }}" width="{{ portion_width }}" height="20" fill="#555" />
+  {% for p in portion %}
+     <rect rx="4" x="{{ title_width + (portion[:loop.index0] | sum / scale * portion_width) | int }}" width="{{ [p/scale, 1] | min * portion_width | int }}" height="20" fill="{{ portion_color[loop.index0] }}" />
+  {% endfor %}
+  {% if title %}
+    <path fill="{{ portion_color }}" d="M{{ title_width }} 0h4v20h-4z" />
+  {% endif %}
+  <rect rx="4" width="{{ title_width + portion_width }}" height="20" fill="url(#a)" />
+
+  {% if title %}
+    <g fill="#fff" text-anchor="left" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+      <text x="4" y="15" fill="#010101" fill-opacity=".3">
+        {{ title }}
+      </text>
+      <text x="4" y="14">
+        {{ title }}
+      </text>
+    </g>
+  {% endif %}
+  {% for p in portion %}
+     <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+       <text x="{{ title_width + (portion[:loop.index0] | sum + p/2) / scale * portion_width | int }}" y="15" fill="#010101" fill-opacity=".3">
+          {{p}}{{suffix}}
+       </text>
+       <text x="{{ title_width + (portion[:loop.index0] | sum + p/2) / scale * portion_width | int }}" y="14">
+         {{p}}{{suffix}}
+       </text>
+  </g>
+  {% endfor %}
+</svg>
